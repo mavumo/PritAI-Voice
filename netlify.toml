@@ -1,0 +1,9 @@
+[build]
+  # This section is now handled in the UI, but it's good practice.
+  # command = "cd client && npm install && npm run build"
+  # publish = "dist/public"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
