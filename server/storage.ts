@@ -116,6 +116,11 @@ export class MemStorage implements IStorage {
       startTime: new Date(),
       endTime: null,
       duration: null,
+      summary: insertCall.summary || null,
+      callSid: insertCall.callSid || null,
+      sessionId: insertCall.sessionId || null,
+      matterType: insertCall.matterType || null,
+      audioUrl: insertCall.audioUrl || null,
     };
     this.calls.set(id, call);
     return call;
@@ -157,6 +162,11 @@ export class MemStorage implements IStorage {
       id,
       createdAt: new Date(),
       reviewedAt: null,
+      status: insertIntake.status || 'pending',
+      email: insertIntake.email || null,
+      callId: insertIntake.callId || null,
+      urgency: insertIntake.urgency || null,
+      additionalInfo: insertIntake.additionalInfo || null,
     };
     this.intakes.set(id, intake);
     return intake;
@@ -189,6 +199,9 @@ export class MemStorage implements IStorage {
       ...insertLog,
       id,
       timestamp: new Date(),
+      details: insertLog.details || null,
+      level: insertLog.level || 'info',
+      relatedId: insertLog.relatedId || null,
     };
     this.systemLogs.set(id, log);
     return log;

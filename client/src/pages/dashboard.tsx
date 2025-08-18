@@ -51,15 +51,15 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
-    if (dashboardStats) setStats(dashboardStats);
+    if (dashboardStats && typeof dashboardStats === 'object') setStats(dashboardStats as DashboardStats);
   }, [dashboardStats]);
 
   useEffect(() => {
-    if (systemConfig) setConfig(systemConfig);
+    if (systemConfig && typeof systemConfig === 'object') setConfig(systemConfig as SystemConfig);
   }, [systemConfig]);
 
   useEffect(() => {
-    if (businessHoursData) setBusinessHours(businessHoursData);
+    if (businessHoursData && typeof businessHoursData === 'object') setBusinessHours(businessHoursData as BusinessHours);
   }, [businessHoursData]);
 
   useEffect(() => {
@@ -69,7 +69,9 @@ export default function Dashboard() {
       }
     });
 
-    return removeListener;
+    return () => {
+      removeListener();
+    };
   }, [addMessageListener]);
 
   const handleBusinessHoursToggle = async (enabled: boolean) => {

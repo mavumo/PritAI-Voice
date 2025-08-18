@@ -14,11 +14,10 @@ export function IntakeTable() {
 
   const { data, isLoading } = useQuery({
     queryKey: ['/api/intakes'],
-    queryParams: { limit: 10 },
   });
 
   useEffect(() => {
-    if (data) {
+    if (data && Array.isArray(data)) {
       setIntakes(data);
     }
   }, [data]);
@@ -37,7 +36,9 @@ export function IntakeTable() {
       }
     });
 
-    return removeListener;
+    return () => {
+      removeListener();
+    };
   }, [addMessageListener]);
 
   const handleReviewIntake = async (intakeId: string) => {

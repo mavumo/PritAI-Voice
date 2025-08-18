@@ -17,7 +17,7 @@ export function CallMonitor() {
   });
 
   useEffect(() => {
-    if (calls) {
+    if (calls && Array.isArray(calls)) {
       setActiveCalls(calls);
     }
   }, [calls]);
@@ -34,7 +34,9 @@ export function CallMonitor() {
       }
     });
 
-    return removeListener;
+    return () => {
+      removeListener();
+    };
   }, [addMessageListener]);
 
   const handleEndCall = async (callId: string) => {
