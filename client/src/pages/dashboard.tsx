@@ -93,6 +93,25 @@ export default function Dashboard() {
     }
   };
 
+  const handleTestCall = async () => {
+    try {
+      const response = await apiRequest('POST', '/api/test/simulate-call', {
+        phoneNumber: '+15551234567'
+      });
+      
+      toast({
+        title: "Test call started",
+        description: "Watch the call monitor for the simulated call. It will auto-end in 30 seconds.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to start test call. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const handleResponseModeChange = async (mode: string) => {
     try {
       await apiRequest('PATCH', '/api/system/config', {
@@ -272,6 +291,21 @@ export default function Dashboard() {
                 </div>
                 <p className="text-lg font-mono text-gray-900" data-testid="text-phone-number">+1 (510) 443-2123</p>
                 <p className="text-xs text-gray-500 mt-1">Webhook configured</p>
+              </div>
+
+              {/* Test Call Button */}
+              <div className="pt-4 border-t border-gray-200">
+                <Button
+                  onClick={handleTestCall}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                  data-testid="button-test-call"
+                >
+                  <i className="fas fa-phone mr-2"></i>
+                  Simulate Test Call
+                </Button>
+                <p className="text-xs text-gray-500 mt-2 text-center">
+                  Creates a test call that auto-ends after 30 seconds
+                </p>
               </div>
 
               {/* OpenAI API Status */}

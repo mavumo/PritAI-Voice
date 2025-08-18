@@ -210,6 +210,61 @@ export async function registerRoutes(app: Application): Promise<Server> {
     }
   });
 
+  // Test endpoint to simulate incoming calls
+  app.post('/api/test/simulate-call', async (req, res) => {
+    try {
+      const { phoneNumber = '+15551234567' } = req.body;
+      
+      // Create a test call record
+      const call = await storage.createCall({
+        phoneNumber: phoneNumber,
+        status: 'active',
+        callSid: `test_${Date.now()}`,
+        sessionId: null,
+        matterType: null,
+        summary: null,
+        audioUrl: null,
+      });
+
+      // Log the test call
+      await storage.createSystemLog({
+        type: 'call',
+        message: 'Test call simulated',
+        details: { phoneNumber, callSid: call.callSid },
+        level: 'info',
+        relatedId: call.id,
+      });
+
+      // Broadcast call update
+      broadcast({ type: 'call_started', call });
+
+      res.json({ 
+        message: 'Test call simulated successfully', 
+        call,
+        instructions: 'You can end this test call from the dashboard or it will auto-end in 30 seconds'
+      });
+
+      // Auto-end the test call after 30 seconds
+      setTimeout(async () => {
+        try {
+          await storage.updateCall(call.id, { 
+            status: 'completed',
+            endTime: new Date(),
+            duration: 30,
+            summary: 'Test call - automatically ended'
+          });
+          broadcast({ type: 'call_ended', callId: call.id });
+        } catch (error) {
+          console.error('Failed to auto-end test call:', error);
+        }
+      }, 30000);
+
+    } catch (error) {
+      console.error('Test call simulation error:', error);
+      res.status(500).json({ message: 'Failed to simulate test call' });
+    }
+  });
+
   app.get('/api/intakes', async (req, res) => {
     try {
       const { status, limit } = req.query;
