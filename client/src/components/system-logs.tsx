@@ -10,11 +10,10 @@ export function SystemLogs() {
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['/api/system/logs'],
-    queryParams: { limit: 10 },
   });
 
   useEffect(() => {
-    if (data) {
+    if (data && Array.isArray(data)) {
       setLogs(data);
     }
   }, [data]);
@@ -27,7 +26,9 @@ export function SystemLogs() {
       }
     });
 
-    return removeListener;
+    return () => {
+      removeListener();
+    };
   }, [addMessageListener, refetch]);
 
   const getLogIcon = (type: string) => {
@@ -150,7 +151,7 @@ export function SystemLogs() {
                   {log.details && (
                     <p className="text-xs text-gray-600" data-testid={`text-log-details-${log.id}`}>
                       {typeof log.details === 'string' ? log.details : 
-                       Object.entries(log.details).map(([key, value]) => `${key}: ${value}`).join(' • ')}
+                       <span>{JSON.stringify(log.details)}</span>}
                     </p>
                   )}
                   <p className="text-xs text-gray-400" data-testid={`text-log-timestamp-${log.id}`}>

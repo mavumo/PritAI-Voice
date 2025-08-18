@@ -1,4 +1,5 @@
 import type { Express } from "express";
+import type { Application } from "express-ws";
 import { createServer, type Server } from "http";
 import { WebSocketServer, WebSocket } from "ws";
 import { storage } from "./storage";
@@ -7,7 +8,7 @@ import { OpenAIRealtimeService } from "./services/openai-realtime";
 import { BusinessHoursService } from "./services/business-hours";
 import { insertCallSchema, insertIntakeSchema, insertSystemLogSchema } from "@shared/schema";
 
-export async function registerRoutes(app: Express): Promise<Server> {
+export async function registerRoutes(app: Application): Promise<Server> {
   const httpServer = createServer(app);
 
   // WebSocket server for real-time updates
@@ -73,7 +74,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Twilio audio streaming endpoint
-  app.ws('/api/twilio/stream/:callId', async (ws, req) => {
+  app.ws('/api/twilio/stream/:callId', async (ws: any, req: any) => {
     const callId = req.params.callId;
     let openaiWs: WebSocket | null = null;
     

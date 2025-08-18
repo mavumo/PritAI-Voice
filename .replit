@@ -36,3 +36,7 @@ waitForPort = 5000
 
 [agent]
 integrations = ["javascript_websocket==1.0.0", "javascript_openai==1.0.0", "javascript_mem_db==1.0.0"]
+
+[[ports]]
+localPort = 5000
+externalPort = 80
