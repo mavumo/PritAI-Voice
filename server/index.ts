@@ -68,7 +68,8 @@ wsApp.use((req, res, next) => {
   if (wsApp.get("env") === "development") {
     await setupVite(wsApp as any, server);
   } else {
-    serveStatic(wsApp as any);
+     // We are serving the client from Netlify, so we don't need this.
+    // serveStatic(wsApp as any);
   }
 
   // ALWAYS serve the app on the port specified in the environment variable PORT
