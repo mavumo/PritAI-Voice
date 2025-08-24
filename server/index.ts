@@ -2,11 +2,24 @@ import express, { type Request, Response, NextFunction } from "express";
 import expressWs from "express-ws";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import cors from "cors";
 
 const app = express();
 const { app: wsApp } = expressWs(app);
 wsApp.use(express.json());
 wsApp.use(express.urlencoded({ extended: false }));
+wsApp.use(express.urlencoded({ extended: false }));
+
+// Add these lines to enable CORS for your Netlify frontend
+const corsOptions = {
+    origin: 'https://pritsinghlaw.netlify.app',
+    optionsSuccessStatus: 200
+};
+wsApp.use(cors(corsOptions));
+
+wsApp.use((req, res, next) => {
+    // ... rest of your code
+});
 
 wsApp.use((req, res, next) => {
   const start = Date.now();
