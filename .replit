@@ -39,4 +39,3 @@ integrations = ["javascript_websocket==1.0.0", "javascript_openai==1.0.0", "java
 
 [[ports]]
 localPort = 5000
-externalPort = 5000
