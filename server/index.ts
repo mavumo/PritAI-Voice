@@ -78,11 +78,7 @@ wsApp.use((req, res, next) => {
   // It is the only port that is not firewalled.
 const port = parseInt(process.env.PORT, 10) || 5000;
 
-server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-}, () => {
+server.listen(port, () => {
     log(`serving on port ${port}`);
 });
 })(); // This is the corrected syntax
